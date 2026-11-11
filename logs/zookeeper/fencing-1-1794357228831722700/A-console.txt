@@ -1,0 +1,16 @@
+2026-11-11 03:33:49,211 INFO {"requested_session_timeout": 10, "negotiated_session_timeout_ms": 10000, "event": "WAITING", "coordinator": "A", "monotonic": 487524.1348709, "time": 1794357229.2116375, "pid": 26412}
+2026-11-11 03:33:49,245 INFO {"epoch": 1, "epoch_version": 1, "event": "LEADER", "coordinator": "A", "monotonic": 487524.1688155, "time": 1794357229.245582, "pid": 26412}
+2026-11-11 03:33:49,249 INFO {"offset": 0, "total": 3676, "event": "RESTORED", "coordinator": "A", "monotonic": 487524.1727598, "time": 1794357229.2495258, "pid": 26412}
+2026-11-11 03:33:49,280 INFO {"offset": 200, "epoch": 1, "event": "CHECKPOINT", "coordinator": "A", "monotonic": 487524.204137, "time": 1794357229.2809029, "pid": 26412}
+2026-11-11 03:33:49,829 INFO {"offset": 400, "epoch": 1, "event": "CHECKPOINT", "coordinator": "A", "monotonic": 487524.7526403, "time": 1794357229.8294063, "pid": 26412}
+2026-11-11 03:33:50,399 INFO {"offset": 600, "epoch": 1, "event": "CHECKPOINT", "coordinator": "A", "monotonic": 487525.322176, "time": 1794357230.3989434, "pid": 26412}
+2026-11-11 03:34:30,934 WARNING Connection dropped: socket connection broken
+2026-11-11 03:34:30,935 WARNING Transition to CONNECTING
+2026-11-11 03:34:30,935 INFO {"state": "SUSPENDED", "event": "SESSION", "coordinator": "A", "monotonic": 487565.8584728, "time": 1794357270.9352388, "pid": 26412}
+2026-11-11 03:34:30,942 WARNING Session has expired
+2026-11-11 03:34:30,942 INFO {"state": "LOST", "event": "SESSION", "coordinator": "A", "monotonic": 487565.8661206, "time": 1794357270.9428868, "pid": 26412}
+2026-11-11 03:34:30,949 INFO {"state": "CONNECTED", "event": "SESSION", "coordinator": "A", "monotonic": 487565.8727506, "time": 1794357270.9495168, "pid": 26412}
+2026-11-11 03:34:30,956 INFO {"epoch": 1, "error": "BadVersionError", "event": "STALE_CHECKPOINT_REJECTED", "coordinator": "A", "monotonic": 487565.8792433, "time": 1794357270.9560091, "pid": 26412}
+2026-11-11 03:34:39,576 INFO {"hashes": {"skills_1.csv": "2a63b68f9706e1275fee59a38cd91e75e82b01f03e0335488a05f05741ac7a04", "skills_2.csv": "afe6b03a13d3a72c07fe208e887afaf83cde10261367e13e4ec03a5f9c7fe3a8", "skills_3.csv": "22b2c5c90c59c9a4579e0cf515befddb7180541e7ff4980321f8700f47cf0683"}, "matched": 3676, "event": "MATCH_HW3", "coordinator": "A", "monotonic": 487574.4999617, "time": 1794357279.5767298, "pid": 26412}
+2026-11-11 03:34:39,601 INFO {"error": "BadVersionError", "epoch": 1, "event": "REJECTED", "coordinator": "A", "monotonic": 487574.5245103, "time": 1794357279.601277, "pid": 26412}
+2026-11-11 03:34:39,609 INFO {"state": "LOST", "event": "SESSION", "coordinator": "A", "monotonic": 487574.5324717, "time": 1794357279.6092374, "pid": 26412}

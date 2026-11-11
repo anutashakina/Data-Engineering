@@ -1,0 +1,2 @@
+# Preserve the exact bytes of the published experimental CSV artifacts.
+results/zookeeper/**/*.csv -text

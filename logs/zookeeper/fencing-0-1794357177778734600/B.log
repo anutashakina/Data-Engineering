@@ -1,0 +1,22 @@
+2026-11-11 03:32:59,917 INFO {"requested_session_timeout": 10, "negotiated_session_timeout_ms": 10000, "event": "WAITING", "coordinator": "B", "monotonic": 487474.8404258, "time": 1794357179.9171917, "pid": 20052}
+2026-11-11 03:33:11,391 INFO {"epoch": 2, "epoch_version": 2, "event": "LEADER", "coordinator": "B", "monotonic": 487486.3150651, "time": 1794357191.391831, "pid": 20052}
+2026-11-11 03:33:11,434 INFO {"offset": 600, "total": 3676, "event": "RESTORED", "coordinator": "B", "monotonic": 487486.3580921, "time": 1794357191.4348598, "pid": 20052}
+2026-11-11 03:33:11,484 INFO {"offset": 800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487486.4080651, "time": 1794357191.4848318, "pid": 20052}
+2026-11-11 03:33:12,044 INFO {"offset": 1000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487486.9676859, "time": 1794357192.044452, "pid": 20052}
+2026-11-11 03:33:12,690 INFO {"offset": 1200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487487.6132234, "time": 1794357192.6899898, "pid": 20052}
+2026-11-11 03:33:13,419 INFO {"offset": 1400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487488.3424259, "time": 1794357193.419192, "pid": 20052}
+2026-11-11 03:33:14,052 INFO {"offset": 1600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487488.976006, "time": 1794357194.052772, "pid": 20052}
+2026-11-11 03:33:14,639 INFO {"offset": 1800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487489.5626727, "time": 1794357194.6394386, "pid": 20052}
+2026-11-11 03:33:15,225 INFO {"offset": 2000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487490.14872, "time": 1794357195.225486, "pid": 20052}
+2026-11-11 03:33:15,924 INFO {"offset": 2200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487490.8471964, "time": 1794357195.9239626, "pid": 20052}
+2026-11-11 03:33:16,532 INFO {"offset": 2400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487491.4552898, "time": 1794357196.5320559, "pid": 20052}
+2026-11-11 03:33:17,213 INFO {"offset": 2600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487492.1363025, "time": 1794357197.2130685, "pid": 20052}
+2026-11-11 03:33:17,830 INFO {"offset": 2800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487492.7540664, "time": 1794357197.8308332, "pid": 20052}
+2026-11-11 03:33:18,447 INFO {"offset": 3000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487493.3708709, "time": 1794357198.447637, "pid": 20052}
+2026-11-11 03:33:19,066 INFO {"offset": 3200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487493.9900943, "time": 1794357199.0668602, "pid": 20052}
+2026-11-11 03:33:19,698 INFO {"offset": 3400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487494.6214541, "time": 1794357199.69822, "pid": 20052}
+2026-11-11 03:33:20,406 INFO {"offset": 3600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487495.329303, "time": 1794357200.4060695, "pid": 20052}
+2026-11-11 03:33:21,143 INFO {"offset": 3676, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487496.067048, "time": 1794357201.1438155, "pid": 20052}
+2026-11-11 03:33:22,452 INFO {"hashes": {"skills_1.csv": "2a63b68f9706e1275fee59a38cd91e75e82b01f03e0335488a05f05741ac7a04", "skills_2.csv": "afe6b03a13d3a72c07fe208e887afaf83cde10261367e13e4ec03a5f9c7fe3a8", "skills_3.csv": "22b2c5c90c59c9a4579e0cf515befddb7180541e7ff4980321f8700f47cf0683"}, "matched": 3676, "event": "MATCH_HW3", "coordinator": "B", "monotonic": 487497.375589, "time": 1794357202.4523585, "pid": 20052}
+2026-11-11 03:33:22,518 INFO {"message": "записал результат", "version": 1, "epoch": 2, "event": "PUBLISHED", "coordinator": "B", "monotonic": 487497.4409006, "time": 1794357202.517668, "pid": 20052}
+2026-11-11 03:33:22,531 INFO {"state": "LOST", "event": "SESSION", "coordinator": "B", "monotonic": 487497.4543066, "time": 1794357202.5310721, "pid": 20052}

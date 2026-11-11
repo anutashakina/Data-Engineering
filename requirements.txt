@@ -4,3 +4,4 @@ boto3
 psutil
 matplotlib
 pyarrow
+kazoo==2.10.0

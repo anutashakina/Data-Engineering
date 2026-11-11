@@ -5,3 +5,5 @@ results/local-check/
 results/**/.s3-snapshot-*/
 
 .idea/
+checkpoints/zk-input.json
+checkpoints/zookeeper/

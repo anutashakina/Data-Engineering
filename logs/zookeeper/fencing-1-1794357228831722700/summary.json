@@ -1,0 +1,21 @@
+{
+  "run": "fencing-1-1794357228831722700",
+  "fencing": 1,
+  "pause_monotonic": 487525.8317951,
+  "pause_time": 1794357230.908563,
+  "failover_seconds": 10.463114999991376,
+  "backup_restored_offset": 600,
+  "publications": 1,
+  "pointer_version": 1,
+  "pointer": {
+    "coordinator": "B",
+    "directory": "results/zookeeper/fencing-1-1794357228831722700/B",
+    "epoch": 2,
+    "hashes": {
+      "skills_1.csv": "2a63b68f9706e1275fee59a38cd91e75e82b01f03e0335488a05f05741ac7a04",
+      "skills_2.csv": "afe6b03a13d3a72c07fe208e887afaf83cde10261367e13e4ec03a5f9c7fe3a8",
+      "skills_3.csv": "22b2c5c90c59c9a4579e0cf515befddb7180541e7ff4980321f8700f47cf0683"
+    }
+  },
+  "both_match_hw3": true
+}

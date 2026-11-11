@@ -1,0 +1,22 @@
+2026-11-11 03:33:50,868 INFO {"requested_session_timeout": 10, "negotiated_session_timeout_ms": 10000, "event": "WAITING", "coordinator": "B", "monotonic": 487525.7917124, "time": 1794357230.86848, "pid": 26272}
+2026-11-11 03:34:01,371 INFO {"epoch": 2, "epoch_version": 2, "event": "LEADER", "coordinator": "B", "monotonic": 487536.2949101, "time": 1794357241.3716762, "pid": 26272}
+2026-11-11 03:34:01,412 INFO {"offset": 600, "total": 3676, "event": "RESTORED", "coordinator": "B", "monotonic": 487536.3360963, "time": 1794357241.412864, "pid": 26272}
+2026-11-11 03:34:01,462 INFO {"offset": 800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487536.3859831, "time": 1794357241.462749, "pid": 26272}
+2026-11-11 03:34:02,026 INFO {"offset": 1000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487536.9493795, "time": 1794357242.026146, "pid": 26272}
+2026-11-11 03:34:02,595 INFO {"offset": 1200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487537.5191753, "time": 1794357242.595941, "pid": 26272}
+2026-11-11 03:34:03,166 INFO {"offset": 1400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487538.0894777, "time": 1794357243.1662436, "pid": 26272}
+2026-11-11 03:34:03,738 INFO {"offset": 1600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487538.6612034, "time": 1794357243.7379694, "pid": 26272}
+2026-11-11 03:34:04,322 INFO {"offset": 1800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487539.2459512, "time": 1794357244.3227172, "pid": 26272}
+2026-11-11 03:34:04,911 INFO {"offset": 2000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487539.8347612, "time": 1794357244.9115272, "pid": 26272}
+2026-11-11 03:34:05,515 INFO {"offset": 2200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487540.4383981, "time": 1794357245.5151641, "pid": 26272}
+2026-11-11 03:34:06,121 INFO {"offset": 2400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487541.0450364, "time": 1794357246.1218023, "pid": 26272}
+2026-11-11 03:34:06,720 INFO {"offset": 2600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487541.644147, "time": 1794357246.720913, "pid": 26272}
+2026-11-11 03:34:07,329 INFO {"offset": 2800, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487542.2531562, "time": 1794357247.3299222, "pid": 26272}
+2026-11-11 03:34:07,951 INFO {"offset": 3000, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487542.8742759, "time": 1794357247.9510417, "pid": 26272}
+2026-11-11 03:34:08,576 INFO {"offset": 3200, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487543.499783, "time": 1794357248.5765488, "pid": 26272}
+2026-11-11 03:34:09,204 INFO {"offset": 3400, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487544.1277579, "time": 1794357249.2045243, "pid": 26272}
+2026-11-11 03:34:09,840 INFO {"offset": 3600, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487544.7636937, "time": 1794357249.8404603, "pid": 26272}
+2026-11-11 03:34:10,506 INFO {"offset": 3676, "epoch": 2, "event": "CHECKPOINT", "coordinator": "B", "monotonic": 487545.4292782, "time": 1794357250.5060444, "pid": 26272}
+2026-11-11 03:34:11,570 INFO {"hashes": {"skills_1.csv": "2a63b68f9706e1275fee59a38cd91e75e82b01f03e0335488a05f05741ac7a04", "skills_2.csv": "afe6b03a13d3a72c07fe208e887afaf83cde10261367e13e4ec03a5f9c7fe3a8", "skills_3.csv": "22b2c5c90c59c9a4579e0cf515befddb7180541e7ff4980321f8700f47cf0683"}, "matched": 3676, "event": "MATCH_HW3", "coordinator": "B", "monotonic": 487546.4933227, "time": 1794357251.5700943, "pid": 26272}
+2026-11-11 03:34:11,595 INFO {"message": "записал результат", "version": 1, "epoch": 2, "event": "PUBLISHED", "coordinator": "B", "monotonic": 487546.518241, "time": 1794357251.5950074, "pid": 26272}
+2026-11-11 03:34:11,602 INFO {"state": "LOST", "event": "SESSION", "coordinator": "B", "monotonic": 487546.5254432, "time": 1794357251.602209, "pid": 26272}

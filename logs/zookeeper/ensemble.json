@@ -1,0 +1,31 @@
+{
+  "initial": {
+    "zk1": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 0/0.0/0\nReceived: 1\nSent: 0\nConnections: 1\nOutstanding: 0\nZxid: 0x100000001\nMode: follower\nNode count: 5\n",
+    "zk2": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 0/0.0/0\nReceived: 1\nSent: 0\nConnections: 1\nOutstanding: 0\nZxid: 0x100000001\nMode: leader\nNode count: 5\nProposal sizes last/min/max: 48/48/48\n",
+    "zk3": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 26/26.0/26\nReceived: 2\nSent: 1\nConnections: 2\nOutstanding: 0\nZxid: 0x100000001\nMode: follower\nNode count: 5\n"
+  },
+  "one_stopped": {
+    "zk1": "timed out",
+    "zk2": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 0/0.0/0\nReceived: 2\nSent: 1\nConnections: 1\nOutstanding: 0\nZxid: 0x100000003\nMode: leader\nNode count: 6\nProposal sizes last/min/max: 96/48/126\n",
+    "zk3": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 8/15.0/26\nReceived: 5\nSent: 4\nConnections: 2\nOutstanding: 0\nZxid: 0x100000003\nMode: follower\nNode count: 6\n"
+  },
+  "write_with_two": "two alive",
+  "two_stopped": {
+    "zk1": "timed out",
+    "zk2": "This ZooKeeper instance is not currently serving requests\n",
+    "zk3": "timed out"
+  },
+  "no_quorum_write_error": "KazooTimeoutError",
+  "no_quorum_connect_error": "KazooTimeoutError",
+  "restored": {
+    "zk1": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 0/0.0/0\nReceived: 94\nSent: 93\nConnections: 1\nOutstanding: 0\nZxid: 0x200000002\nMode: follower\nNode count: 6\n",
+    "zk2": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 0/0.0/0\nReceived: 1\nSent: 0\nConnections: 1\nOutstanding: 0\nZxid: 0x200000002\nMode: follower\nNode count: 6\n",
+    "zk3": "Zookeeper version: 3.9.6-a355171b081b5b60749db8f19cca1528b0df936f, built on 2026-09-03 19:29 UTC\nLatency min/avg/max: 1/4.5/11\nReceived: 98\nSent: 97\nConnections: 2\nOutstanding: 0\nZxid: 0x200000002\nMode: leader\nNode count: 6\nProposal sizes last/min/max: 48/48/48\n"
+  },
+  "write_after_restore": "restored quorum",
+  "ephemeral_before_close": {
+    "path": "/hw4-ephemeral-1794357167214388800",
+    "owner": 72059546421231616
+  },
+  "ephemeral_after_close": null
+}

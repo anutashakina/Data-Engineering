@@ -1,0 +1,4 @@
+get -s /hw4-ephemeral-1794357167214388800
+get -s /skills-hw4/fencing-0-1794357177778734600/result
+get -s /skills-hw4/fencing-1-1794357228831722700/result
+quit
