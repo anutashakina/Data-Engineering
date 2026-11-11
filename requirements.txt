@@ -1,0 +1,6 @@
+pandas
+duckdb
+boto3
+psutil
+matplotlib
+pyarrow

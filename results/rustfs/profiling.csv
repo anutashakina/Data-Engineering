@@ -1,0 +1,7 @@
+attempt,method,seconds,peak_tree_rss_mib
+1,mapreduce,11.994,126.04
+1,duckdb,7.89,533.36
+2,mapreduce,11.024,127.57
+2,duckdb,5.943,499.65
+3,mapreduce,12.296,125.02
+3,duckdb,5.911,504.83

@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+data/vacancies.csv
+results/local-check/
+results/**/.s3-snapshot-*/
+
+.idea/

@@ -1,0 +1,39 @@
+FAULT INJECTION: mapper PID 7796 exits with code 86
+Traceback (most recent call last):
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\check_mapper_failure.py", line 113, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\check_mapper_failure.py", line 66, in main
+    skill_counts.main()
+    ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\skill_counts.py", line 174, in main
+    with inputs(args, title_pattern) as (map_counts, matched, csv_path):
+         ~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\skill_counts.py", line 134, in inputs
+    counts, matched, etag = map_s3(client, object_ref, title_pattern,
+                            ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  args.chunk_size, args.workers)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\skill_counts.py", line 110, in map_s3
+    counts, matched = map_reduce(stream, title_pattern, chunk_size, workers)
+                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shaki\PycharmProjects\it-vacancies-analysis\src\skill_counts.py", line 77, in map_reduce
+    for chunk, partial in zip(batch, pool.map(map_chunk, batch), strict=True):
+                          ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\process.py", line 617, in _chain_from_iterable_of_lists
+    for element in iterable:
+                   ^^^^^^^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\shaki\AppData\Local\Programs\Python\Python313\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.
