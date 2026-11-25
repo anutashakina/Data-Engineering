@@ -1,0 +1,1068 @@
+$ kubectl --context docker-desktop -n dz5-a1 get nodes -o wide
+NAME             STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE         KERNEL-VERSION                             CONTAINER-RUNTIME
+docker-desktop   Ready    control-plane   9h    v1.36.1   192.168.65.3   <none>        Docker Desktop   6.6.87.2-microsoft-standard-WSL2 (amd64)   docker://29.9.3
+
+$ kubectl --context docker-desktop -n dz5-a1 get namespace dz5-a1 --ignore-not-found -o name
+namespace/dz5-a1
+
+$ kubectl --context docker-desktop -n dz5-a1 apply -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\lab5\priorities.yaml
+priorityclass.scheduling.k8s.io/dz5-low created
+priorityclass.scheduling.k8s.io/dz5-high created
+
+$ kubectl --context docker-desktop -n dz5-a1 get nodes -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Node",
+            "metadata": {
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                },
+                "creationTimestamp": "2026-11-24T21:04:33Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "docker-desktop",
+                    "kubernetes.io/os": "linux",
+                    "node-role.kubernetes.io/control-plane": "",
+                    "node.kubernetes.io/exclude-from-external-load-balancers": ""
+                },
+                "name": "docker-desktop",
+                "resourceVersion": "5952",
+                "uid": "4ba87035-d896-44df-8958-6ca33b8cc7e5"
+            },
+            "spec": {},
+            "status": {
+                "addresses": [
+                    {
+                        "address": "192.168.65.3",
+                        "type": "InternalIP"
+                    },
+                    {
+                        "address": "docker-desktop",
+                        "type": "Hostname"
+                    }
+                ],
+                "allocatable": {
+                    "cpu": "16",
+                    "ephemeral-storage": "972991057538",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "7684288Ki",
+                    "pods": "110"
+                },
+                "capacity": {
+                    "cpu": "16",
+                    "ephemeral-storage": "1055762868Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "7786688Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "lastHeartbeatTime": "2026-11-25T06:52:19Z",
+                        "lastTransitionTime": "2026-11-24T21:04:33Z",
+                        "message": "kubelet has sufficient memory available",
+                        "reason": "KubeletHasSufficientMemory",
+                        "status": "False",
+                        "type": "MemoryPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-11-25T06:52:19Z",
+                        "lastTransitionTime": "2026-11-24T21:04:33Z",
+                        "message": "kubelet has no disk pressure",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "status": "False",
+                        "type": "DiskPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-11-25T06:52:19Z",
+                        "lastTransitionTime": "2026-11-24T21:04:33Z",
+                        "message": "kubelet has sufficient PID available",
+                        "reason": "KubeletHasSufficientPID",
+                        "status": "False",
+                        "type": "PIDPressure"
+                    },
+                    {
+                        "lastHeartbeatTime": "2026-11-25T06:52:19Z",
+                        "lastTransitionTime": "2026-11-24T21:04:35Z",
+                        "message": "kubelet is posting ready status",
+                        "reason": "KubeletReady",
+                        "status": "True",
+                        "type": "Ready"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "declaredFeatures": [
+                    "ExtendWebSocketsToKubelet",
+                    "InPlacePodLevelResourcesVerticalScaling",
+                    "InPlacePodVerticalScalingInitContainers",
+                    "RestartAllContainersOnContainerExits"
+                ],
+                "images": [
+                    {
+                        "names": [
+                            "agrodiagnosis-mlflow@sha256:e828e6ba98f01d80172c29d1f028b9f20c4520e50941495adfa0432a21a2a1d9",
+                            "agrodiagnosis-mlflow:latest"
+                        ],
+                        "sizeBytes": 2558367603
+                    },
+                    {
+                        "names": [
+                            "agrodiagnosis-source@sha256:cc701c0f79a913121ba282a34eda39053972dd3b3890a85280516e58e59fe8ff",
+                            "agrodiagnosis-source:latest"
+                        ],
+                        "sizeBytes": 2552721263
+                    },
+                    {
+                        "names": [
+                            "agrodiagnosis-worker@sha256:b5f482886113a6922c915b4682fa3f88dc01d3dbeed366ecf7dcdf1d97369fe3",
+                            "agrodiagnosis-worker:latest"
+                        ],
+                        "sizeBytes": 2552721263
+                    },
+                    {
+                        "names": [
+                            "agrodiagnosis-app@sha256:13e250a650ca889092774d1648f0ce3b678d95daa3c392c21cd2c8d88931826b",
+                            "agrodiagnosis-app:latest"
+                        ],
+                        "sizeBytes": 2542690515
+                    },
+                    {
+                        "names": [
+                            "kindest/node@sha256:3489c7674813ba5d8b1a9977baea8a6e553784dab7b84759d1014dbd78f7ebd5",
+                            "kindest/node:v1.36.1"
+                        ],
+                        "sizeBytes": 1314497342
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-integration-tests@sha256:62a94b0edb4f06f14b9615c70aafd5716f10a93eb70ad8dbfbc0a3218b48fc42",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304296516
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-integration-tests@sha256:ce0268716a0d75262e4e344044151817cd3e292ff4364dfb9148a528ee54f293",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304296506
+                    },
+                    {
+                        "names": [
+                            "ecommerce-regression-review-integration-tests@sha256:ff4562b497632f85d6269169b6052576333d05bd90ad89dd878cb54cd544ba3f",
+                            "ecommerce-regression-review-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304296470
+                    },
+                    {
+                        "names": [
+                            "ecommerce-database-check-integration-tests@sha256:60ac5c6bfe86f240818abb0341717bb686a46e0df76e3f2d991e28653507d616",
+                            "ecommerce-database-check-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304296464
+                    },
+                    {
+                        "names": [
+                            "ecommerce-upload-review-integration-tests@sha256:c8172e3074f65218788c221067da0c33c2e7a56082dc359b477dbddd5bb49577",
+                            "ecommerce-upload-review-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304296462
+                    },
+                    {
+                        "names": [
+                            "grpc-template-review-integration-tests@sha256:ab2197b9129c7dc70d9fbd672c32d9afb67557f963eb97cec185f0a8b81ce060",
+                            "grpc-template-review-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304250372
+                    },
+                    {
+                        "names": [
+                            "grpc-contract-review-integration-tests@sha256:095783e850a127eada7f02da1f7f3e6910717d773c42e682f39c83fc1685d96e",
+                            "grpc-contract-review-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1304250372
+                    },
+                    {
+                        "names": [
+                            "grpc-homework-check-integration-tests@sha256:e4ae90fe12452f84140d990c495e94059fad473f6c20e72595511fe2d2749c73",
+                            "grpc-homework-check-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1303718144
+                    },
+                    {
+                        "names": [
+                            "grpc-final-audit-integration-tests@sha256:bfb9a048466a261a3c90c29c28391f8b7a548c76e3f3f003a5686f9d55267412",
+                            "grpc-final-audit-integration-tests:latest"
+                        ],
+                        "sizeBytes": 1303718139
+                    },
+                    {
+                        "names": [
+                            "mlflow-mlflow@sha256:c7bb2efbf86da05fe0f8207e13a6915197e0e5358eac784e0bd6c9c6949d381e",
+                            "mlflow-mlflow:latest"
+                        ],
+                        "sizeBytes": 1300516730
+                    },
+                    {
+                        "names": [
+                            "dz5-pairs-input@sha256:8a6ddcc8b01921a5a618bd185df547f172f8b6499bb6ea737677978aa9e68c6a",
+                            "dz5-pairs-input:local"
+                        ],
+                        "sizeBytes": 1294869216
+                    },
+                    {
+                        "names": [
+                            "postgres@sha256:223efeb196329b55b3b9a13db144956411dbc18e727e59f681c3e0aede6475cf",
+                            "postgres:17"
+                        ],
+                        "sizeBytes": 671316272
+                    },
+                    {
+                        "names": [
+                            "docker/desktop-kubernetes@sha256:65e5eddaacf5813d581a13faa525196dd52d5be0c6e43cc5a4b54c8042077182",
+                            "docker/desktop-kubernetes:kubernetes-v1.36.1-cni-v1.9.1-critools-v1.35.0-cri-dockerd-v0.4.4-1-debian"
+                        ],
+                        "sizeBytes": 594147696
+                    },
+                    {
+                        "names": [
+                            "docker/desktop-cloud-provider-kind@sha256:c6b5ce52a4af7dea0a7f0d65507c56f25d3533555ac2a61af6c7e1b9e9ee0e2c",
+                            "docker/desktop-cloud-provider-kind:v0.8.0"
+                        ],
+                        "sizeBytes": 551425381
+                    },
+                    {
+                        "names": [
+                            "rustfs/rustfs@sha256:ee717072290bec9b11abfc0365f8310b00df1cd9b3639943edae47bdef05044a",
+                            "rustfs/rustfs:latest"
+                        ],
+                        "sizeBytes": 488073686
+                    },
+                    {
+                        "names": [
+                            "zookeeper@sha256:bbf678337a9242fcb6e49e51193855078ec515251cf11fe0bcfabae6a10e040a",
+                            "zookeeper:3.9.6-jre-17"
+                        ],
+                        "sizeBytes": 461391110
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-billing@sha256:f04470aaf8ca1bcb1f9865590f55c497cc2a75859d63e13d831b7fb9e9a8cc4e",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-billing:latest"
+                        ],
+                        "sizeBytes": 448361520
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-billing@sha256:eaf35253979a779bc7112a0b2996a4ffea50dd40bb96c2a5774a76c016f3d072",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-billing:latest"
+                        ],
+                        "sizeBytes": 448361510
+                    },
+                    {
+                        "names": [
+                            "ecommerce-regression-review-billing@sha256:2c46b07cb26ab22d4fe583a8999935e20bd98349edf29deb24cdc34f92978ec6",
+                            "ecommerce-regression-review-billing:latest"
+                        ],
+                        "sizeBytes": 448361474
+                    },
+                    {
+                        "names": [
+                            "ecommerce-database-check-billing@sha256:0449f5cc00e4d5901ed132f53d2dc9f7a9a4f0a192cc9ca1f595009ff1e811fe",
+                            "ecommerce-database-check-billing:latest"
+                        ],
+                        "sizeBytes": 448361468
+                    },
+                    {
+                        "names": [
+                            "ecommerce-upload-review-billing@sha256:83c991d06626275899c7322752240fab91ecdbd10dcd464b51c094ed56c5a6dc",
+                            "ecommerce-upload-review-billing:latest"
+                        ],
+                        "sizeBytes": 448361466
+                    },
+                    {
+                        "names": [
+                            "grpc-final-audit-billing@sha256:29a4cc8b10d46c9335291c8e09bde332ffee3f2669b4eee1823186924f1f35ad",
+                            "grpc-final-audit-billing:latest"
+                        ],
+                        "sizeBytes": 448304961
+                    },
+                    {
+                        "names": [
+                            "grpc-template-review-billing@sha256:ab2b35277893b61052268dfd19990d1b607307bf8cb99a26b8c9ce88178d1c1b",
+                            "grpc-template-review-billing:latest"
+                        ],
+                        "sizeBytes": 448304913
+                    },
+                    {
+                        "names": [
+                            "grpc-contract-review-billing@sha256:5c3eb66510d020177e946b1be2e60dae1ad0b214f025cf90cd71b50e1f5ae4e3",
+                            "grpc-contract-review-billing:latest"
+                        ],
+                        "sizeBytes": 448304913
+                    },
+                    {
+                        "names": [
+                            "grpc-homework-check-billing@sha256:4d0d8481977d78c9f4cfcd110c6d47faacee5209f34c2a42fa8c74f8d8d5e399",
+                            "grpc-homework-check-billing:latest"
+                        ],
+                        "sizeBytes": 447672512
+                    },
+                    {
+                        "names": [
+                            "postgres@sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+                            "postgres:17-alpine"
+                        ],
+                        "sizeBytes": 423832583
+                    },
+                    {
+                        "names": [
+                            "postgres@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea",
+                            "postgres:16-alpine"
+                        ],
+                        "sizeBytes": 419715444
+                    },
+                    {
+                        "names": [
+                            "rabbitmq@sha256:789893c0b4907f0ff3bc6e630120174ab6879825907f4c3ab79439e2488409cc",
+                            "rabbitmq:4.1-management"
+                        ],
+                        "sizeBytes": 388516464
+                    },
+                    {
+                        "names": [
+                            "envoyproxy/envoy@sha256:29d778ba078e0404d18fa45ffb834c062071b0f81dc0a6a41501ce8e23a0059f",
+                            "envoyproxy/envoy:v1.36.7"
+                        ],
+                        "sizeBytes": 253434597
+                    },
+                    {
+                        "names": [
+                            "dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                            "dz5-pairs-worker:local"
+                        ],
+                        "sizeBytes": 246751016
+                    },
+                    {
+                        "names": [
+                            "docker@sha256:34507eb5069d8be82c95dd3b6987d4250fd5fee49b82e2509b7d7a7030740d6d",
+                            "docker:cli"
+                        ],
+                        "sizeBytes": 224045839
+                    },
+                    {
+                        "names": [
+                            "python@sha256:7249d5587b78209a006dc4a3b5340678f84ea729239193aa559962cd8c1fce50",
+                            "python:3.13-slim"
+                        ],
+                        "sizeBytes": 178333635
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/kube-apiserver@sha256:2460df74307cafacf674573c88df511aeb1aece9daa7fbd968fe27cb1c8c4588",
+                            "registry.k8s.io/kube-apiserver:v1.36.1"
+                        ],
+                        "sizeBytes": 128713120
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/kube-controller-manager@sha256:c8adb8daee5b30576bd87638a89351ab8388b3fda466bedb7eacf10cde77dbe7",
+                            "registry.k8s.io/kube-controller-manager:v1.36.1"
+                        ],
+                        "sizeBytes": 114572362
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/kube-proxy@sha256:a96b6e12863ef766d18f69afaad7a5329220c37ce21cb232bcb58362d284f3f7",
+                            "registry.k8s.io/kube-proxy:v1.36.1"
+                        ],
+                        "sizeBytes": 110509809
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/coredns/coredns@sha256:e7e6440cfd1e919280958f5b5a6ab2b184d385bba774c12ad2a9e1e4183f90d9",
+                            "registry.k8s.io/coredns/coredns:v1.14.2"
+                        ],
+                        "sizeBytes": 102071063
+                    },
+                    {
+                        "names": [
+                            "grpc-homework-preview-frontend@sha256:93db2e3ee6ddbdc732d144c6d4ddc364e7026a8b76a3c6a40e489264cac4b7c3",
+                            "grpc-homework-preview-frontend:latest"
+                        ],
+                        "sizeBytes": 92962512
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/etcd@sha256:397189418d1a00e500c0605ad18d1baf3b541a1004d768448c367e48071622e5",
+                            "registry.k8s.io/etcd:3.6.8-0"
+                        ],
+                        "sizeBytes": 88764496
+                    },
+                    {
+                        "names": [
+                            "registry.k8s.io/kube-scheduler@sha256:3a4333e8ba6e1f74c9bc467c791a06a26808474e8819582cf130cfe0fddc3155",
+                            "registry.k8s.io/kube-scheduler:v1.36.1"
+                        ],
+                        "sizeBytes": 83419528
+                    },
+                    {
+                        "names": [
+                            "docker/desktop-storage-provisioner@sha256:3bd0c035975deebe50433ca51339b514f92b5b763ca36048462bcb6e53ce5b01",
+                            "docker/desktop-storage-provisioner:v5.0"
+                        ],
+                        "sizeBytes": 82189733
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-telegram@sha256:d6ef579192b92bcc4390508605cb5e6541c953dc38ad3ce7ede0f4cfadeb57d1",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-test-telegram:latest"
+                        ],
+                        "sizeBytes": 74131736
+                    },
+                    {
+                        "names": [
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-telegram@sha256:61e426a30bf6908077b261604b9438b3f207da91188a5abd14c19b145629a8ba",
+                            "nature-se-go-2026-c122-grpc-a136-anutashakina-telegram:latest"
+                        ],
+                        "sizeBytes": 74131725
+                    },
+                    {
+                        "names": [
+                            "ecommerce-regression-review-telegram@sha256:ee03103f63c341cb5b6ad8dcc8aa07aba8056cb572fd2884104bc5febff0e889",
+                            "ecommerce-regression-review-telegram:latest"
+                        ],
+                        "sizeBytes": 74131690
+                    },
+                    {
+                        "names": [
+                            "ecommerce-database-check-telegram@sha256:8252805e58d59c3c771f8801340e3a3ea18e9c8a11ee8f1fe05623f6ac21f30b",
+                            "ecommerce-database-check-telegram:latest"
+                        ],
+                        "sizeBytes": 74131684
+                    },
+                    {
+                        "names": [
+                            "ecommerce-upload-review-telegram@sha256:264590fe71cbe099dbec94e87271eca02ae1acadbc272cd2e9a71a7a17044317",
+                            "ecommerce-upload-review-telegram:latest"
+                        ],
+                        "sizeBytes": 74131681
+                    }
+                ],
+                "nodeInfo": {
+                    "architecture": "amd64",
+                    "bootID": "cbc75c8b-56f7-44a8-b4f2-81d8112b4bdd",
+                    "containerRuntimeVersion": "docker://29.9.3",
+                    "kernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+                    "kubeProxyVersion": "",
+                    "kubeletVersion": "v1.36.1",
+                    "machineID": "06ce5506fc7c4211878eb72d44e84a7f",
+                    "operatingSystem": "linux",
+                    "osImage": "Docker Desktop",
+                    "swap": {
+                        "capacity": 2147483648
+                    },
+                    "systemUUID": "06ce5506fc7c4211878eb72d44e84a7f"
+                }
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 describe node docker-desktop
+Name:               docker-desktop
+Roles:              control-plane
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=docker-desktop
+                    kubernetes.io/os=linux
+                    node-role.kubernetes.io/control-plane=
+                    node.kubernetes.io/exclude-from-external-load-balancers=
+Annotations:        node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Wed, 25 Nov 2026 00:04:33 +0300
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  docker-desktop
+  AcquireTime:     <unset>
+  RenewTime:       Wed, 25 Nov 2026 09:52:13 +0300
+Conditions:
+  Type             Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----             ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure   False   Wed, 25 Nov 2026 09:52:19 +0300   Wed, 25 Nov 2026 00:04:33 +0300   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure     False   Wed, 25 Nov 2026 09:52:19 +0300   Wed, 25 Nov 2026 00:04:33 +0300   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure      False   Wed, 25 Nov 2026 09:52:19 +0300   Wed, 25 Nov 2026 00:04:33 +0300   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready            True    Wed, 25 Nov 2026 09:52:19 +0300   Wed, 25 Nov 2026 00:04:35 +0300   KubeletReady                 kubelet is posting ready status
+Addresses:
+  InternalIP:  192.168.65.3
+  Hostname:    docker-desktop
+Capacity:
+  cpu:                16
+  ephemeral-storage:  1055762868Ki
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             7786688Ki
+  pods:               110
+Allocatable:
+  cpu:                16
+  ephemeral-storage:  972991057538
+  hugepages-1Gi:      0
+  hugepages-2Mi:      0
+  memory:             7684288Ki
+  pods:               110
+System Info:
+  Machine ID:                 06ce5506fc7c4211878eb72d44e84a7f
+  System UUID:                06ce5506fc7c4211878eb72d44e84a7f
+  Boot ID:                    cbc75c8b-56f7-44a8-b4f2-81d8112b4bdd
+  Kernel Version:             6.6.87.2-microsoft-standard-WSL2
+  OS Image:                   Docker Desktop
+  Operating System:           linux
+  Architecture:               amd64
+  Container Runtime Version:  docker://29.9.3
+  Kubelet Version:            v1.36.1
+Non-terminated Pods:          (10 in total)
+  Namespace                   Name                                      CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                      ------------  ----------  ---------------  -------------  ---
+  dz5-a1                      rustfs-695f76f588-rd9gp                   100m (0%)     2 (12%)     128Mi (1%)       1Gi (13%)      11m
+  kube-system                 coredns-589f44dc88-9qfh4                  100m (0%)     0 (0%)      70Mi (0%)        170Mi (2%)     9h
+  kube-system                 coredns-589f44dc88-mfz65                  100m (0%)     0 (0%)      70Mi (0%)        170Mi (2%)     9h
+  kube-system                 etcd-docker-desktop                       100m (0%)     0 (0%)      100Mi (1%)       0 (0%)         9h
+  kube-system                 kube-apiserver-docker-desktop             250m (1%)     0 (0%)      0 (0%)           0 (0%)         9h
+  kube-system                 kube-controller-manager-docker-desktop    200m (1%)     0 (0%)      0 (0%)           0 (0%)         9h
+  kube-system                 kube-proxy-7p7m5                          0 (0%)        0 (0%)      0 (0%)           0 (0%)         9h
+  kube-system                 kube-scheduler-docker-desktop             100m (0%)     0 (0%)      0 (0%)           0 (0%)         9h
+  kube-system                 storage-provisioner                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         9h
+  kube-system                 vpnkit-controller                         0 (0%)        0 (0%)      0 (0%)           0 (0%)         9h
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource           Requests    Limits
+  --------           --------    ------
+  cpu                950m (5%)   2 (12%)
+  memory             368Mi (4%)  1364Mi (18%)
+  ephemeral-storage  0 (0%)      0 (0%)
+  hugepages-1Gi      0 (0%)      0 (0%)
+  hugepages-2Mi      0 (0%)      0 (0%)
+Events:
+  Type    Reason          Age   From             Message
+  ----    ------          ----  ----             -------
+  Normal  RegisteredNode  9h    node-controller  Node docker-desktop event: Registered Node docker-desktop in Controller
+  Normal  RegisteredNode  37m   node-controller  Node docker-desktop event: Registered Node docker-desktop in Controller
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\scheduling-20261125-095222\low.yaml
+pod/low created
+
+$ kubectl --context docker-desktop -n dz5-a1 wait --for=condition=Ready pod/low --timeout=2m
+pod/low condition met
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\scheduling-20261125-095222\waiting.yaml
+pod/waiting created
+
+$ kubectl --context docker-desktop -n dz5-a1 get pod waiting -o json
+{
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+        "creationTimestamp": "2026-11-25T06:52:25Z",
+        "generation": 1,
+        "name": "waiting",
+        "namespace": "dz5-a1",
+        "resourceVersion": "5976",
+        "uid": "fa8b0a20-88e1-4ac2-ad69-025679d1b539"
+    },
+    "spec": {
+        "containers": [
+            {
+                "command": [
+                    "python",
+                    "-c",
+                    "import time; time.sleep(900)"
+                ],
+                "image": "dz5-pairs-worker:local",
+                "imagePullPolicy": "Never",
+                "name": "hold",
+                "resources": {
+                    "limits": {
+                        "cpu": "11287m",
+                        "memory": "32Mi"
+                    },
+                    "requests": {
+                        "cpu": "11287m",
+                        "memory": "16Mi"
+                    }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                    {
+                        "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                        "name": "kube-api-access-vzqdr",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ],
+        "dnsPolicy": "ClusterFirst",
+        "enableServiceLinks": true,
+        "nodeSelector": {
+            "kubernetes.io/hostname": "docker-desktop"
+        },
+        "preemptionPolicy": "Never",
+        "priority": -20000,
+        "priorityClassName": "dz5-low",
+        "restartPolicy": "Never",
+        "schedulerName": "default-scheduler",
+        "securityContext": {},
+        "serviceAccount": "default",
+        "serviceAccountName": "default",
+        "terminationGracePeriodSeconds": 1,
+        "tolerations": [
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/not-ready",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            },
+            {
+                "effect": "NoExecute",
+                "key": "node.kubernetes.io/unreachable",
+                "operator": "Exists",
+                "tolerationSeconds": 300
+            }
+        ],
+        "volumes": [
+            {
+                "name": "kube-api-access-vzqdr",
+                "projected": {
+                    "defaultMode": 420,
+                    "sources": [
+                        {
+                            "serviceAccountToken": {
+                                "expirationSeconds": 3607,
+                                "path": "token"
+                            }
+                        },
+                        {
+                            "configMap": {
+                                "items": [
+                                    {
+                                        "key": "ca.crt",
+                                        "path": "ca.crt"
+                                    }
+                                ],
+                                "name": "kube-root-ca.crt"
+                            }
+                        },
+                        {
+                            "downwardAPI": {
+                                "items": [
+                                    {
+                                        "fieldRef": {
+                                            "apiVersion": "v1",
+                                            "fieldPath": "metadata.namespace"
+                                        },
+                                        "path": "namespace"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "status": {
+        "conditions": [
+            {
+                "lastProbeTime": null,
+                "lastTransitionTime": "2026-11-25T06:52:25Z",
+                "message": "0/1 nodes are available: 1 Insufficient cpu. no new claims to deallocate, preemption: not eligible due to preemptionPolicy=Never.",
+                "observedGeneration": 1,
+                "reason": "Unschedulable",
+                "status": "False",
+                "type": "PodScheduled"
+            }
+        ],
+        "phase": "Pending",
+        "qosClass": "Burstable"
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 describe pod waiting
+Name:                 waiting
+Namespace:            dz5-a1
+Priority:             -20000
+Priority Class Name:  dz5-low
+Service Account:      default
+Node:                 <none>
+Labels:               <none>
+Annotations:          <none>
+Status:               Pending
+IP:                   
+IPs:                  <none>
+Containers:
+  hold:
+    Image:      dz5-pairs-worker:local
+    Port:       <none>
+    Host Port:  <none>
+    Command:
+      python
+      -c
+      import time; time.sleep(900)
+    Limits:
+      cpu:     11287m
+      memory:  32Mi
+    Requests:
+      cpu:        11287m
+      memory:     16Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vzqdr (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False 
+Volumes:
+  kube-api-access-vzqdr:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              kubernetes.io/hostname=docker-desktop
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  0s    default-scheduler  0/1 nodes are available: 1 Insufficient cpu. no new claims to deallocate, preemption: not eligible due to preemptionPolicy=Never.
+
+$ kubectl --context docker-desktop -n dz5-a1 delete pod waiting
+pod "waiting" deleted from dz5-a1 namespace
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\scheduling-20261125-095222\high.yaml
+pod/high created
+
+$ kubectl --context docker-desktop -n dz5-a1 wait --for=condition=Ready pod/high --timeout=3m
+pod/high condition met
+
+$ kubectl --context docker-desktop -n dz5-a1 get events --field-selector involvedObject.name=low -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:23Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5962",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:23Z",
+            "message": "Successfully assigned dz5-a1/low to docker-desktop",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:23Z",
+                "name": "low.18eb372d3cf68dc2",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5964",
+                "uid": "1503b214-2ea7-4e90-b321-7c669affb022"
+            },
+            "reason": "Scheduled",
+            "reportingComponent": "default-scheduler",
+            "reportingInstance": "",
+            "source": {
+                "component": "default-scheduler"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:24Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{hold}",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5963",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:24Z",
+            "message": "Container image \"dz5-pairs-worker:local\" already present on machine and can be accessed by the pod",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:24Z",
+                "name": "low.18eb372d6fd93100",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5970",
+                "uid": "5caf4b38-6f8a-43dc-a000-7df4630c5f18"
+            },
+            "reason": "Pulled",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "docker-desktop",
+            "source": {
+                "component": "kubelet",
+                "host": "docker-desktop"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:24Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{hold}",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5963",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:24Z",
+            "message": "Container created",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:24Z",
+                "name": "low.18eb372d7c010ff2",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5971",
+                "uid": "ef5608ba-7501-4142-8083-5102048c5ad1"
+            },
+            "reason": "Created",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "docker-desktop",
+            "source": {
+                "component": "kubelet",
+                "host": "docker-desktop"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:25Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{hold}",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5963",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:25Z",
+            "message": "Container started",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:25Z",
+                "name": "low.18eb372d871ed7dd",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5972",
+                "uid": "8f9bf08a-32f7-43ff-857e-58679ef40527"
+            },
+            "reason": "Started",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "docker-desktop",
+            "source": {
+                "component": "kubelet",
+                "host": "docker-desktop"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:26Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5973",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:26Z",
+            "message": "Preempted by pod 2fba1327-e81c-4185-bfc5-84a0c2f10843 on node docker-desktop",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:26Z",
+                "name": "low.18eb372dc7c9ad37",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5985",
+                "uid": "08ca4c84-1b02-4f09-86be-4b856f128a17"
+            },
+            "reason": "Preempted",
+            "reportingComponent": "default-scheduler",
+            "reportingInstance": "",
+            "source": {
+                "component": "default-scheduler"
+            },
+            "type": "Normal"
+        },
+        {
+            "apiVersion": "v1",
+            "count": 1,
+            "eventTime": null,
+            "firstTimestamp": "2026-11-25T06:52:27Z",
+            "involvedObject": {
+                "apiVersion": "v1",
+                "fieldPath": "spec.containers{hold}",
+                "kind": "Pod",
+                "name": "low",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5963",
+                "uid": "e287fa03-82d4-4cd6-8808-a20660bca858"
+            },
+            "kind": "Event",
+            "lastTimestamp": "2026-11-25T06:52:27Z",
+            "message": "Stopping container hold",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:52:27Z",
+                "name": "low.18eb372e040d99ad",
+                "namespace": "dz5-a1",
+                "resourceVersion": "5989",
+                "uid": "a9775c47-35c8-468e-bed1-a7f94aacc623"
+            },
+            "reason": "Killing",
+            "reportingComponent": "kubelet",
+            "reportingInstance": "docker-desktop",
+            "source": {
+                "component": "kubelet",
+                "host": "docker-desktop"
+            },
+            "type": "Normal"
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 get events --sort-by=.metadata.creationTimestamp
+LAST SEEN   TYPE      REASON                  OBJECT                              MESSAGE
+31m         Normal    SuccessfulCreate        job/pairs-oom                       Created pod: pairs-oom-lt7gv
+31m         Normal    Scheduled               pod/pairs-oom-lt7gv                 Successfully assigned dz5-a1/pairs-oom-lt7gv to docker-desktop
+31m         Normal    Pulled                  pod/pairs-oom-lt7gv                 Container image "dz5-pairs-input:local" already present on machine and can be accessed by the pod
+31m         Normal    Created                 pod/pairs-oom-lt7gv                 Container created
+31m         Normal    Started                 pod/pairs-oom-lt7gv                 Container started
+27m         Warning   BackoffLimitExceeded    job/pairs-oom                       Job has reached the specified backoff limit
+26m         Normal    SuccessfulCreate        job/pairs-profile                   Created pod: pairs-profile-sfrv4
+26m         Normal    Pulled                  pod/pairs-profile-sfrv4             Container image "dz5-pairs-input:local" already present on machine and can be accessed by the pod
+26m         Normal    Scheduled               pod/pairs-profile-sfrv4             Successfully assigned dz5-a1/pairs-profile-sfrv4 to docker-desktop
+26m         Normal    Created                 pod/pairs-profile-sfrv4             Container created
+26m         Normal    Started                 pod/pairs-profile-sfrv4             Container started
+26m         Normal    Completed               job/pairs-profile                   Job completed
+26m         Normal    Scheduled               pod/pairs-tuned-kqv4r               Successfully assigned dz5-a1/pairs-tuned-kqv4r to docker-desktop
+26m         Normal    SuccessfulCreate        job/pairs-tuned                     Created pod: pairs-tuned-kqv4r
+26m         Normal    Pulled                  pod/pairs-tuned-kqv4r               Container image "dz5-pairs-input:local" already present on machine and can be accessed by the pod
+26m         Normal    Created                 pod/pairs-tuned-kqv4r               Container created
+26m         Normal    Started                 pod/pairs-tuned-kqv4r               Container started
+26m         Normal    Completed               job/pairs-tuned                     Job completed
+11m         Normal    ScalingReplicaSet       deployment/rustfs                   Scaled up replica set rustfs-695f76f588 from 0 to 1
+11m         Normal    ProvisioningSucceeded   persistentvolumeclaim/rustfs-data   Successfully provisioned volume pvc-3671cd4e-5f6a-48f2-abfd-ed874ce7f675
+11m         Normal    Provisioning            persistentvolumeclaim/rustfs-data   External provisioner is provisioning volume for claim "dz5-a1/rustfs-data"
+11m         Normal    ExternalProvisioning    persistentvolumeclaim/rustfs-data   Waiting for a volume to be created either by the external provisioner 'docker.io/hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+11m         Normal    SuccessfulCreate        replicaset/rustfs-695f76f588        Created pod: rustfs-695f76f588-rd9gp
+11m         Warning   FailedScheduling        pod/rustfs-695f76f588-rd9gp         0/1 nodes are available: pod has unbound immediate PersistentVolumeClaims. not found
+11m         Normal    Scheduled               pod/rustfs-695f76f588-rd9gp         Successfully assigned dz5-a1/rustfs-695f76f588-rd9gp to docker-desktop
+11m         Normal    Pulling                 pod/rustfs-695f76f588-rd9gp         Pulling image "busybox:1.36"
+11m         Normal    Pulled                  pod/rustfs-695f76f588-rd9gp         Successfully pulled image "busybox:1.36" in 3.809s (3.809s including waiting). Image size: 6758127 bytes.
+11m         Normal    Pulling                 pod/rustfs-695f76f588-rd9gp         Pulling image "rustfs/rustfs:latest"
+11m         Normal    Started                 pod/rustfs-695f76f588-rd9gp         Container started
+11m         Normal    Created                 pod/rustfs-695f76f588-rd9gp         Container created
+10m         Normal    Pulled                  pod/rustfs-695f76f588-rd9gp         Successfully pulled image "rustfs/rustfs:latest" in 20.977s (20.977s including waiting). Image size: 487405398 bytes.
+10m         Normal    Created                 pod/rustfs-695f76f588-rd9gp         Container created
+10m         Normal    Started                 pod/rustfs-695f76f588-rd9gp         Container started
+10m         Normal    Scheduled               pod/pairs-seed-8vbzp                Successfully assigned dz5-a1/pairs-seed-8vbzp to docker-desktop
+10m         Normal    Pulled                  pod/pairs-seed-8vbzp                Container image "dz5-pairs-input:local" already present on machine and can be accessed by the pod
+10m         Normal    SuccessfulCreate        job/pairs-seed                      Created pod: pairs-seed-8vbzp
+10m         Normal    Created                 pod/pairs-seed-8vbzp                Container created
+10m         Normal    Started                 pod/pairs-seed-8vbzp                Container started
+10m         Warning   Unhealthy               pod/rustfs-695f76f588-rd9gp         Readiness probe failed: Get "http://10.1.0.13:9000/health": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+9m34s       Normal    Completed               job/pairs-seed                      Job completed
+9m33s       Normal    SuccessfulCreate        job/pairs-map                       Created pod: pairs-map-0-sbsb4
+9m33s       Normal    SuccessfulCreate        job/pairs-map                       Created pod: pairs-map-1-x7hsx
+9m33s       Normal    SuccessfulCreate        job/pairs-map                       Created pod: pairs-map-2-drqhr
+9m33s       Normal    Scheduled               pod/pairs-map-0-sbsb4               Successfully assigned dz5-a1/pairs-map-0-sbsb4 to docker-desktop
+9m32s       Normal    Scheduled               pod/pairs-map-3-cnttf               Successfully assigned dz5-a1/pairs-map-3-cnttf to docker-desktop
+9m33s       Normal    Scheduled               pod/pairs-map-2-drqhr               Successfully assigned dz5-a1/pairs-map-2-drqhr to docker-desktop
+9m33s       Normal    Scheduled               pod/pairs-map-1-x7hsx               Successfully assigned dz5-a1/pairs-map-1-x7hsx to docker-desktop
+9m33s       Normal    SuccessfulCreate        job/pairs-map                       Created pod: pairs-map-3-cnttf
+9m31s       Normal    Started                 pod/pairs-map-0-sbsb4               Container started
+9m31s       Normal    Created                 pod/pairs-map-0-sbsb4               Container created
+9m31s       Normal    Pulled                  pod/pairs-map-0-sbsb4               Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+9m31s       Normal    Pulled                  pod/pairs-map-1-x7hsx               Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+9m31s       Normal    Created                 pod/pairs-map-1-x7hsx               Container created
+9m31s       Normal    Pulled                  pod/pairs-map-2-drqhr               Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+9m31s       Normal    Pulled                  pod/pairs-map-3-cnttf               Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+9m31s       Normal    Created                 pod/pairs-map-2-drqhr               Container created
+9m30s       Normal    Started                 pod/pairs-map-2-drqhr               Container started
+9m30s       Normal    Started                 pod/pairs-map-3-cnttf               Container started
+9m30s       Normal    Created                 pod/pairs-map-3-cnttf               Container created
+9m30s       Normal    Started                 pod/pairs-map-1-x7hsx               Container started
+9m24s       Normal    Completed               job/pairs-map                       Job completed
+9m22s       Normal    Scheduled               pod/pairs-reduce-c9zmp              Successfully assigned dz5-a1/pairs-reduce-c9zmp to docker-desktop
+9m22s       Normal    Pulled                  pod/pairs-reduce-c9zmp              Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+9m22s       Normal    SuccessfulCreate        job/pairs-reduce                    Created pod: pairs-reduce-c9zmp
+9m21s       Normal    Created                 pod/pairs-reduce-c9zmp              Container created
+9m21s       Normal    Started                 pod/pairs-reduce-c9zmp              Container started
+9m16s       Normal    Completed               job/pairs-reduce                    Job completed
+8s          Normal    Scheduled               pod/low                             Successfully assigned dz5-a1/low to docker-desktop
+7s          Normal    Created                 pod/low                             Container created
+7s          Normal    Pulled                  pod/low                             Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+6s          Normal    Started                 pod/low                             Container started
+6s          Warning   FailedScheduling        pod/waiting                         0/1 nodes are available: 1 Insufficient cpu. no new claims to deallocate, preemption: not eligible due to preemptionPolicy=Never.
+5s          Normal    Preempted               pod/low                             Preempted by pod 2fba1327-e81c-4185-bfc5-84a0c2f10843 on node docker-desktop
+5s          Warning   FailedScheduling        pod/high                            0/1 nodes are available: 1 Insufficient cpu.
+4s          Normal    Killing                 pod/low                             Stopping container hold
+2s          Normal    Scheduled               pod/high                            Successfully assigned dz5-a1/high to docker-desktop
+1s          Normal    Pulled                  pod/high                            Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+1s          Normal    Created                 pod/high                            Container created
+0s          Normal    Started                 pod/high                            Container started
+
+$ kubectl --context docker-desktop -n dz5-a1 get pods -o wide
+NAME                      READY   STATUS      RESTARTS   AGE     IP          NODE             NOMINATED NODE   READINESS GATES
+high                      1/1     Running     0          5s      10.1.0.21   docker-desktop   <none>           <none>
+pairs-map-0-sbsb4         0/1     Completed   0          9m33s   10.1.0.15   docker-desktop   <none>           <none>
+pairs-map-1-x7hsx         0/1     Completed   0          9m33s   10.1.0.16   docker-desktop   <none>           <none>
+pairs-map-2-drqhr         0/1     Completed   0          9m33s   10.1.0.17   docker-desktop   <none>           <none>
+pairs-map-3-cnttf         0/1     Completed   0          9m33s   10.1.0.18   docker-desktop   <none>           <none>
+pairs-oom-lt7gv           0/1     OOMKilled   0          31m     10.1.0.10   docker-desktop   <none>           <none>
+pairs-profile-sfrv4       0/1     Completed   0          26m     10.1.0.11   docker-desktop   <none>           <none>
+pairs-reduce-c9zmp        0/1     Completed   0          9m22s   10.1.0.19   docker-desktop   <none>           <none>
+pairs-seed-8vbzp          0/1     Completed   0          10m     10.1.0.14   docker-desktop   <none>           <none>
+pairs-tuned-kqv4r         0/1     Completed   0          26m     10.1.0.12   docker-desktop   <none>           <none>
+rustfs-695f76f588-rd9gp   1/1     Running     0          11m     10.1.0.13   docker-desktop   <none>           <none>
+
+$ kubectl --context docker-desktop -n dz5-a1 delete pod low waiting high --ignore-not-found
+pod "high" deleted from dz5-a1 namespace
+

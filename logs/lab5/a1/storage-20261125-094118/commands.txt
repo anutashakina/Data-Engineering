@@ -1,0 +1,2105 @@
+$ kubectl --context docker-desktop -n dz5-a1 get nodes -o wide
+NAME             STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE         KERNEL-VERSION                             CONTAINER-RUNTIME
+docker-desktop   Ready    control-plane   9h    v1.36.1   192.168.65.3   <none>        Docker Desktop   6.6.87.2-microsoft-standard-WSL2 (amd64)   docker://29.9.3
+
+$ kubectl --context docker-desktop -n dz5-a1 get namespace dz5-a1 --ignore-not-found -o name
+namespace/dz5-a1
+
+$ kubectl --context docker-desktop -n dz5-a1 get secret rustfs-login --ignore-not-found -o name
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f -
+secret/rustfs-login created
+
+$ kubectl --context docker-desktop -n dz5-a1 apply -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\lab5\rustfs.yaml
+persistentvolumeclaim/rustfs-data created
+deployment.apps/rustfs created
+service/rustfs created
+
+$ kubectl --context docker-desktop -n dz5-a1 rollout status deployment/rustfs --timeout=6m
+Waiting for deployment "rustfs" rollout to finish: 0 of 1 updated replicas are available...
+deployment "rustfs" successfully rolled out
+
+$ kubectl --context docker-desktop -n dz5-a1 get pvc,svc,pods -o wide
+NAME                                STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
+persistentvolumeclaim/rustfs-data   Bound    pvc-3671cd4e-5f6a-48f2-abfd-ed874ce7f675   4Gi        RWO            hostpath       <unset>                 29s   Filesystem
+
+NAME             TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE   SELECTOR
+service/rustfs   ClusterIP   10.110.60.120   <none>        9000/TCP   29s   app=rustfs
+
+NAME                          READY   STATUS      RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
+pod/pairs-oom-lt7gv           0/1     OOMKilled   0          20m   10.1.0.10   docker-desktop   <none>           <none>
+pod/pairs-profile-sfrv4       0/1     Completed   0          16m   10.1.0.11   docker-desktop   <none>           <none>
+pod/pairs-tuned-kqv4r         0/1     Completed   0          16m   10.1.0.12   docker-desktop   <none>           <none>
+pod/rustfs-695f76f588-rd9gp   1/1     Running     0          29s   10.1.0.13   docker-desktop   <none>           <none>
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\storage-20261125-094118\pairs-seed.yaml
+job.batch/pairs-seed created
+
+$ kubectl --context docker-desktop -n dz5-a1 wait --for=condition=complete job/pairs-seed --timeout=12m
+job.batch/pairs-seed condition met
+
+$ kubectl --context docker-desktop -n dz5-a1 get pods -l job-name=pairs-seed -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:41:49Z",
+                "generateName": "pairs-seed-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "f2c53032-5016-4805-ac97-da8c66d7f88e",
+                    "batch.kubernetes.io/job-name": "pairs-seed",
+                    "controller-uid": "f2c53032-5016-4805-ac97-da8c66d7f88e",
+                    "job-name": "pairs-seed"
+                },
+                "name": "pairs-seed-8vbzp",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-seed",
+                        "uid": "f2c53032-5016-4805-ac97-da8c66d7f88e"
+                    }
+                ],
+                "resourceVersion": "4791",
+                "uid": "9c27bf37-73d3-411f-9809-93821ff9b3b2"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "seed"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-input:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "1Gi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6mkfq",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-6mkfq",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "128Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:57Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:41:49Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:55Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:55Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:41:49Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "128Mi"
+                        },
+                        "containerID": "docker://df7c30020553344428389a5072efce9b675ab8452ffd558711c8de4feb6ca425",
+                        "image": "dz5-pairs-input:local",
+                        "imageID": "docker-pullable://dz5-pairs-input@sha256:8a6ddcc8b01921a5a618bd185df547f172f8b6499bb6ea737677978aa9e68c6a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "1Gi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://df7c30020553344428389a5072efce9b675ab8452ffd558711c8de4feb6ca425",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:42:55Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:41:50Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-6mkfq",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.14",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.14"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "limits": {
+                        "cpu": "1",
+                        "memory": "1Gi"
+                    },
+                    "requests": {
+                        "cpu": "79m",
+                        "memory": "128Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:41:49Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 describe pods -l job-name=pairs-seed
+Name:             pairs-seed-8vbzp
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:41:49 +0300
+Labels:           batch.kubernetes.io/controller-uid=f2c53032-5016-4805-ac97-da8c66d7f88e
+                  batch.kubernetes.io/job-name=pairs-seed
+                  controller-uid=f2c53032-5016-4805-ac97-da8c66d7f88e
+                  job-name=pairs-seed
+Annotations:      <none>
+Status:           Succeeded
+IP:               10.1.0.14
+IPs:
+  IP:           10.1.0.14
+Controlled By:  Job/pairs-seed
+Containers:
+  pairs:
+    Container ID:  docker://df7c30020553344428389a5072efce9b675ab8452ffd558711c8de4feb6ca425
+    Image:         dz5-pairs-input:local
+    Image ID:      docker-pullable://dz5-pairs-input@sha256:8a6ddcc8b01921a5a618bd185df547f172f8b6499bb6ea737677978aa9e68c6a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      seed
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:41:50 +0300
+      Finished:     Wed, 25 Nov 2026 09:42:55 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  1Gi
+    Requests:
+      cpu:     100m
+      memory:  128Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:              a1
+      AWS_DEFAULT_REGION:  us-east-1
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6mkfq (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-6mkfq:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  69s   default-scheduler  Successfully assigned dz5-a1/pairs-seed-8vbzp to docker-desktop
+  Normal  Pulled     69s   kubelet            spec.containers{pairs}: Container image "dz5-pairs-input:local" already present on machine and can be accessed by the pod
+  Normal  Created    68s   kubelet            spec.containers{pairs}: Container created
+  Normal  Started    68s   kubelet            spec.containers{pairs}: Container started
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-seed-8vbzp
+s3://hh-lake/lab5/a1/vacancies.csv sha256=303db922b541e4440906f5a7e8be32fb55e8808f950ffddb8c272f1548212a65 parts=4
+
+$ kubectl --context docker-desktop -n dz5-a1 logs job/pairs-seed
+s3://hh-lake/lab5/a1/vacancies.csv sha256=303db922b541e4440906f5a7e8be32fb55e8808f950ffddb8c272f1548212a65 parts=4
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\storage-20261125-094118\pairs-map.yaml
+job.batch/pairs-map created
+
+$ kubectl --context docker-desktop -n dz5-a1 wait --for=condition=complete job/pairs-map --timeout=12m
+job.batch/pairs-map condition met
+
+$ kubectl --context docker-desktop -n dz5-a1 get pods -l job-name=pairs-map -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "batch.kubernetes.io/job-completion-index": "0"
+                },
+                "creationTimestamp": "2026-11-25T06:42:58Z",
+                "generateName": "pairs-map-0-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "batch.kubernetes.io/job-completion-index": "0",
+                    "batch.kubernetes.io/job-name": "pairs-map",
+                    "controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "job-name": "pairs-map"
+                },
+                "name": "pairs-map-0-sbsb4",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-map",
+                        "uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767"
+                    }
+                ],
+                "resourceVersion": "4872",
+                "uid": "f31911c9-c54c-407e-9168-1e91029381ca"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "map"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "name": "JOB_COMPLETION_INDEX",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['batch.kubernetes.io/job-completion-index']"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-worker:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-ddtx8",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "pairs-map-0",
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-ddtx8",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "64Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:06Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:58Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:58Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "64Mi"
+                        },
+                        "containerID": "docker://d0d85cb8944f2944333ab1a2cd78d571ffc8643dc4b576c16f320a8183f1bcc9",
+                        "image": "dz5-pairs-worker:local",
+                        "imageID": "docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://d0d85cb8944f2944333ab1a2cd78d571ffc8643dc4b576c16f320a8183f1bcc9",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:43:03Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:43:00Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-ddtx8",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.15",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.15"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "requests": {
+                        "memory": "64Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:42:58Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "batch.kubernetes.io/job-completion-index": "1"
+                },
+                "creationTimestamp": "2026-11-25T06:42:58Z",
+                "generateName": "pairs-map-1-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "batch.kubernetes.io/job-completion-index": "1",
+                    "batch.kubernetes.io/job-name": "pairs-map",
+                    "controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "job-name": "pairs-map"
+                },
+                "name": "pairs-map-1-x7hsx",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-map",
+                        "uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767"
+                    }
+                ],
+                "resourceVersion": "4868",
+                "uid": "24989d2e-3afd-47ea-97a1-7fa17ee8eeba"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "map"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "name": "JOB_COMPLETION_INDEX",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['batch.kubernetes.io/job-completion-index']"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-worker:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-9nt8z",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "pairs-map-1",
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-9nt8z",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "64Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:06Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:59Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:58Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "64Mi"
+                        },
+                        "containerID": "docker://c68ad3903c519eb64c781ce92489a9b490b6fa8911b01490db047a0af29852c8",
+                        "image": "dz5-pairs-worker:local",
+                        "imageID": "docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://c68ad3903c519eb64c781ce92489a9b490b6fa8911b01490db047a0af29852c8",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:43:03Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:43:00Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-9nt8z",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.16",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.16"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "requests": {
+                        "memory": "64Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:42:59Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "batch.kubernetes.io/job-completion-index": "2"
+                },
+                "creationTimestamp": "2026-11-25T06:42:58Z",
+                "generateName": "pairs-map-2-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "batch.kubernetes.io/job-completion-index": "2",
+                    "batch.kubernetes.io/job-name": "pairs-map",
+                    "controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "job-name": "pairs-map"
+                },
+                "name": "pairs-map-2-drqhr",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-map",
+                        "uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767"
+                    }
+                ],
+                "resourceVersion": "4871",
+                "uid": "30c5bbb1-df1d-4e10-8b50-3095cb667cef"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "map"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "name": "JOB_COMPLETION_INDEX",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['batch.kubernetes.io/job-completion-index']"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-worker:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-vdtrb",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "pairs-map-2",
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-vdtrb",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "64Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:06Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:59Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:58Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "64Mi"
+                        },
+                        "containerID": "docker://8af0f7cc7e8e7b350570cce3afa50eec2e5ae1ef064dfbeabdeef92d44db56a1",
+                        "image": "dz5-pairs-worker:local",
+                        "imageID": "docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://8af0f7cc7e8e7b350570cce3afa50eec2e5ae1ef064dfbeabdeef92d44db56a1",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:43:03Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:43:00Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-vdtrb",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.17",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.17"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "requests": {
+                        "memory": "64Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:42:59Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "batch.kubernetes.io/job-completion-index": "3"
+                },
+                "creationTimestamp": "2026-11-25T06:42:58Z",
+                "generateName": "pairs-map-3-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "batch.kubernetes.io/job-completion-index": "3",
+                    "batch.kubernetes.io/job-name": "pairs-map",
+                    "controller-uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767",
+                    "job-name": "pairs-map"
+                },
+                "name": "pairs-map-3-cnttf",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-map",
+                        "uid": "9d294e03-1cfd-4d08-a57c-560b0cfe0767"
+                    }
+                ],
+                "resourceVersion": "4874",
+                "uid": "8b6ca543-2fb9-46c0-b52d-f483e1bc32eb"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "map"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            },
+                            {
+                                "name": "JOB_COMPLETION_INDEX",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.labels['batch.kubernetes.io/job-completion-index']"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-worker:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-z9xhn",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "hostname": "pairs-map-3",
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-z9xhn",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "64Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:06Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:59Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:04Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:42:58Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "64Mi"
+                        },
+                        "containerID": "docker://a07974a89dd9f4c4a9de6cf9e009465ff115e9714b7d596db4242c82e70061b1",
+                        "image": "dz5-pairs-worker:local",
+                        "imageID": "docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://a07974a89dd9f4c4a9de6cf9e009465ff115e9714b7d596db4242c82e70061b1",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:43:03Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:43:01Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-z9xhn",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.18",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.18"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "requests": {
+                        "memory": "64Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:42:59Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 describe pods -l job-name=pairs-map
+Name:             pairs-map-0-sbsb4
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:42:58 +0300
+Labels:           batch.kubernetes.io/controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  batch.kubernetes.io/job-completion-index=0
+                  batch.kubernetes.io/job-name=pairs-map
+                  controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  job-name=pairs-map
+Annotations:      batch.kubernetes.io/job-completion-index: 0
+Status:           Succeeded
+IP:               10.1.0.15
+IPs:
+  IP:           10.1.0.15
+Controlled By:  Job/pairs-map
+Containers:
+  pairs:
+    Container ID:  docker://d0d85cb8944f2944333ab1a2cd78d571ffc8643dc4b576c16f320a8183f1bcc9
+    Image:         dz5-pairs-worker:local
+    Image ID:      docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      map
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:43:00 +0300
+      Finished:     Wed, 25 Nov 2026 09:43:03 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  384Mi
+    Requests:
+      cpu:     100m
+      memory:  64Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:                a1
+      AWS_DEFAULT_REGION:    us-east-1
+      JOB_COMPLETION_INDEX:   (v1:metadata.labels['batch.kubernetes.io/job-completion-index'])
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-ddtx8 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-ddtx8:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             pairs-map-1-x7hsx
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:42:59 +0300
+Labels:           batch.kubernetes.io/controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  batch.kubernetes.io/job-completion-index=1
+                  batch.kubernetes.io/job-name=pairs-map
+                  controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  job-name=pairs-map
+Annotations:      batch.kubernetes.io/job-completion-index: 1
+Status:           Succeeded
+IP:               10.1.0.16
+IPs:
+  IP:           10.1.0.16
+Controlled By:  Job/pairs-map
+Containers:
+  pairs:
+    Container ID:  docker://c68ad3903c519eb64c781ce92489a9b490b6fa8911b01490db047a0af29852c8
+    Image:         dz5-pairs-worker:local
+    Image ID:      docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      map
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:43:00 +0300
+      Finished:     Wed, 25 Nov 2026 09:43:03 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  384Mi
+    Requests:
+      cpu:     100m
+      memory:  64Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:                a1
+      AWS_DEFAULT_REGION:    us-east-1
+      JOB_COMPLETION_INDEX:   (v1:metadata.labels['batch.kubernetes.io/job-completion-index'])
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-9nt8z (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-9nt8z:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             pairs-map-2-drqhr
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:42:59 +0300
+Labels:           batch.kubernetes.io/controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  batch.kubernetes.io/job-completion-index=2
+                  batch.kubernetes.io/job-name=pairs-map
+                  controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  job-name=pairs-map
+Annotations:      batch.kubernetes.io/job-completion-index: 2
+Status:           Succeeded
+IP:               10.1.0.17
+IPs:
+  IP:           10.1.0.17
+Controlled By:  Job/pairs-map
+Containers:
+  pairs:
+    Container ID:  docker://8af0f7cc7e8e7b350570cce3afa50eec2e5ae1ef064dfbeabdeef92d44db56a1
+    Image:         dz5-pairs-worker:local
+    Image ID:      docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      map
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:43:00 +0300
+      Finished:     Wed, 25 Nov 2026 09:43:03 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  384Mi
+    Requests:
+      cpu:     100m
+      memory:  64Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:                a1
+      AWS_DEFAULT_REGION:    us-east-1
+      JOB_COMPLETION_INDEX:   (v1:metadata.labels['batch.kubernetes.io/job-completion-index'])
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-vdtrb (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-vdtrb:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+
+Name:             pairs-map-3-cnttf
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:42:59 +0300
+Labels:           batch.kubernetes.io/controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  batch.kubernetes.io/job-completion-index=3
+                  batch.kubernetes.io/job-name=pairs-map
+                  controller-uid=9d294e03-1cfd-4d08-a57c-560b0cfe0767
+                  job-name=pairs-map
+Annotations:      batch.kubernetes.io/job-completion-index: 3
+Status:           Succeeded
+IP:               10.1.0.18
+IPs:
+  IP:           10.1.0.18
+Controlled By:  Job/pairs-map
+Containers:
+  pairs:
+    Container ID:  docker://a07974a89dd9f4c4a9de6cf9e009465ff115e9714b7d596db4242c82e70061b1
+    Image:         dz5-pairs-worker:local
+    Image ID:      docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      map
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:43:01 +0300
+      Finished:     Wed, 25 Nov 2026 09:43:03 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  384Mi
+    Requests:
+      cpu:     100m
+      memory:  64Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:                a1
+      AWS_DEFAULT_REGION:    us-east-1
+      JOB_COMPLETION_INDEX:   (v1:metadata.labels['batch.kubernetes.io/job-completion-index'])
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-z9xhn (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-z9xhn:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-map-0-sbsb4
+index=0 key=lab5/a1/part-0.csv etag="ccdbfbd1494c7b0465446d7164203d6f-2" matched=933 pairs=8127
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-map-1-x7hsx
+index=1 key=lab5/a1/part-1.csv etag="67709b2b9440ddd46525147f1bfd6cac-2" matched=951 pairs=6875
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-map-2-drqhr
+index=2 key=lab5/a1/part-2.csv etag="a256d91ec9345500ed258e5d3c03ea8a-2" matched=909 pairs=7095
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-map-3-cnttf
+index=3 key=lab5/a1/part-3.csv etag="9a85571be683bc5ac3dc98e16409a891-2" matched=883 pairs=7660
+
+$ kubectl --context docker-desktop -n dz5-a1 create -f C:\Users\shaki\PycharmProjects\it-vacancies-analysis\logs\lab5\a1\storage-20261125-094118\pairs-reduce.yaml
+job.batch/pairs-reduce created
+
+$ kubectl --context docker-desktop -n dz5-a1 wait --for=condition=complete job/pairs-reduce --timeout=12m
+job.batch/pairs-reduce condition met
+
+$ kubectl --context docker-desktop -n dz5-a1 get pods -l job-name=pairs-reduce -o json
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "creationTimestamp": "2026-11-25T06:43:09Z",
+                "generateName": "pairs-reduce-",
+                "generation": 1,
+                "labels": {
+                    "batch.kubernetes.io/controller-uid": "b6519920-6ecd-4d99-bf7f-597d7741bf48",
+                    "batch.kubernetes.io/job-name": "pairs-reduce",
+                    "controller-uid": "b6519920-6ecd-4d99-bf7f-597d7741bf48",
+                    "job-name": "pairs-reduce"
+                },
+                "name": "pairs-reduce-c9zmp",
+                "namespace": "dz5-a1",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "batch/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "Job",
+                        "name": "pairs-reduce",
+                        "uid": "b6519920-6ecd-4d99-bf7f-597d7741bf48"
+                    }
+                ],
+                "resourceVersion": "4907",
+                "uid": "3974a33c-3c15-4388-b67c-9c87cd462f06"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "reduce"
+                        ],
+                        "env": [
+                            {
+                                "name": "RUN_ID",
+                                "value": "a1"
+                            },
+                            {
+                                "name": "AWS_DEFAULT_REGION",
+                                "value": "us-east-1"
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "secretRef": {
+                                    "name": "rustfs-login",
+                                    "optional": true
+                                }
+                            }
+                        ],
+                        "image": "dz5-pairs-worker:local",
+                        "imagePullPolicy": "Never",
+                        "name": "pairs",
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-8rwwd",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-8rwwd",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "allocatedResources": {
+                    "cpu": "100m",
+                    "memory": "64Mi"
+                },
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:14Z",
+                        "observedGeneration": 1,
+                        "status": "False",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:09Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:12Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:12Z",
+                        "observedGeneration": 1,
+                        "reason": "PodCompleted",
+                        "status": "False",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-11-25T06:43:09Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "64Mi"
+                        },
+                        "containerID": "docker://8dba9ff1859ed2a4d8266ae9b288a0247efcca0972abe7b370b455f68bedd32b",
+                        "image": "dz5-pairs-worker:local",
+                        "imageID": "docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a",
+                        "lastState": {},
+                        "name": "pairs",
+                        "ready": false,
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "384Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "64Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": false,
+                        "state": {
+                            "terminated": {
+                                "containerID": "docker://8dba9ff1859ed2a4d8266ae9b288a0247efcca0972abe7b370b455f68bedd32b",
+                                "exitCode": 0,
+                                "finishedAt": "2026-11-25T06:43:11Z",
+                                "reason": "Completed",
+                                "startedAt": "2026-11-25T06:43:10Z"
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-8rwwd",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "192.168.65.3",
+                "hostIPs": [
+                    {
+                        "ip": "192.168.65.3"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Succeeded",
+                "podIP": "10.1.0.19",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.19"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "resources": {
+                    "limits": {
+                        "cpu": "1",
+                        "memory": "384Mi"
+                    },
+                    "requests": {
+                        "cpu": "79m",
+                        "memory": "64Mi"
+                    }
+                },
+                "startTime": "2026-11-25T06:43:09Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
+
+$ kubectl --context docker-desktop -n dz5-a1 describe pods -l job-name=pairs-reduce
+Name:             pairs-reduce-c9zmp
+Namespace:        dz5-a1
+Priority:         0
+Service Account:  default
+Node:             docker-desktop/192.168.65.3
+Start Time:       Wed, 25 Nov 2026 09:43:09 +0300
+Labels:           batch.kubernetes.io/controller-uid=b6519920-6ecd-4d99-bf7f-597d7741bf48
+                  batch.kubernetes.io/job-name=pairs-reduce
+                  controller-uid=b6519920-6ecd-4d99-bf7f-597d7741bf48
+                  job-name=pairs-reduce
+Annotations:      <none>
+Status:           Succeeded
+IP:               10.1.0.19
+IPs:
+  IP:           10.1.0.19
+Controlled By:  Job/pairs-reduce
+Containers:
+  pairs:
+    Container ID:  docker://8dba9ff1859ed2a4d8266ae9b288a0247efcca0972abe7b370b455f68bedd32b
+    Image:         dz5-pairs-worker:local
+    Image ID:      docker-pullable://dz5-pairs-worker@sha256:0e17934ed7095e36961330bc07c0f2959793d6d234c1dd3eef661df0edff115a
+    Port:          <none>
+    Host Port:     <none>
+    Args:
+      reduce
+    State:          Terminated
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Wed, 25 Nov 2026 09:43:10 +0300
+      Finished:     Wed, 25 Nov 2026 09:43:11 +0300
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     1
+      memory:  384Mi
+    Requests:
+      cpu:     100m
+      memory:  64Mi
+    Environment Variables from:
+      rustfs-login  Secret  Optional: true
+    Environment:
+      RUN_ID:              a1
+      AWS_DEFAULT_REGION:  us-east-1
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-8rwwd (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   False 
+  Initialized                 True 
+  Ready                       False 
+  ContainersReady             False 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-8rwwd:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  6s    default-scheduler  Successfully assigned dz5-a1/pairs-reduce-c9zmp to docker-desktop
+  Normal  Pulled     6s    kubelet            spec.containers{pairs}: Container image "dz5-pairs-worker:local" already present on machine and can be accessed by the pod
+  Normal  Created    5s    kubelet            spec.containers{pairs}: Container created
+  Normal  Started    5s    kubelet            spec.containers{pairs}: Container started
+
+$ kubectl --context docker-desktop -n dz5-a1 logs pairs-reduce-c9zmp
+{"matched": 3676, "unique_pairs": 17565, "occurrences": 59034, "top10": [[["C++", "Linux"], 875], [["C/C++", "Linux"], 532], [["C++", "Git"], 522], [["C++", "Qt"], 512], [["Git", "Linux"], 505], [["C++", "STL"], 406], [["Linux", "Qt"], 328], [["C++", "Python"], 282], [["C++", "ООП"], 274], [["Git", "Qt"], 270]]}
+
+$ kubectl --context docker-desktop -n dz5-a1 logs job/pairs-reduce
+{"matched": 3676, "unique_pairs": 17565, "occurrences": 59034, "top10": [[["C++", "Linux"], 875], [["C/C++", "Linux"], 532], [["C++", "Git"], 522], [["C++", "Qt"], 512], [["Git", "Linux"], 505], [["C++", "STL"], 406], [["Linux", "Qt"], 328], [["C++", "Python"], 282], [["C++", "ООП"], 274], [["Git", "Qt"], 270]]}
+

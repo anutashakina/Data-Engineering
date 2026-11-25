@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: allowed}
+spec:
+  priorityClassName: dz5-low
+  nodeSelector: {kubernetes.io/hostname: "docker-desktop"}
+  terminationGracePeriodSeconds: 1
+  restartPolicy: Never
+  containers:
+    - name: hold
+      image: dz5-pairs-worker:local
+      imagePullPolicy: Never
+      command: ["python", "-c", "import time; time.sleep(900)"]
+      resources:
+        requests: {cpu: "5m", memory: 16Mi}
+        limits: {cpu: "5m", memory: 32Mi}

@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pairs-profile
+spec:
+  completions: 1
+  parallelism: 1
+  completionMode: NonIndexed
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pairs
+          image: dz5-pairs-input:local
+          imagePullPolicy: Never
+          args: ["single"]
+          env:
+            - {name: RUN_ID, value: "a1"}
+            - {name: AWS_DEFAULT_REGION, value: us-east-1}
+          envFrom:
+            - secretRef: {name: rustfs-login, optional: true}
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: "1", memory: 1536Mi}

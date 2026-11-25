@@ -1,0 +1,10 @@
+**
+!src/
+!src/skill_counts.py
+!lab5/
+!lab5/pairs.py
+!results/
+!results/rustfs/
+!results/rustfs/skills_2.csv
+!data/
+!data/vacancies.csv

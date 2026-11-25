@@ -1,25 +1,17 @@
-# Отказоустойчивость средствами Apache ZooKeeper
-## Материалы
+# Лабораторная работа № 5. Управление ресурсами в Kubernetes
 
-| Материал | Расположение |
-| --- | --- |
-| Отчёт со скриншотами (PDF) | [Отказоустойчивость средствами Apache ZooKeeper.pdf](<Отказоустойчивость средствами Apache ZooKeeper.pdf>) |
-| Конфигурация ансамбля | [compose.yaml](compose.yaml) |
-| Координатор и сценарий проверки | [zk_coordinator.py](src/zk_coordinator.py), [check_zookeeper.py](src/check_zookeeper.py) |
-| Журналы A и B обоих запусков | [Без защиты](logs/zookeeper/fencing-0-1794357177778734600/): [A.log](logs/zookeeper/fencing-0-1794357177778734600/A.log), [B.log](logs/zookeeper/fencing-0-1794357177778734600/B.log); [с защитой](logs/zookeeper/fencing-1-1794357228831722700/): [A.log](logs/zookeeper/fencing-1-1794357228831722700/A.log), [B.log](logs/zookeeper/fencing-1-1794357228831722700/B.log) |
-| Серверные журналы и выводы команд | [commands.txt](logs/zookeeper/commands.txt) |
-| Проверки кворума и эфемерного узла | [ensemble.json](logs/zookeeper/ensemble.json), [zkCli.txt](logs/zookeeper/zkCli.txt), [final-zkCli.txt](logs/zookeeper/final-zkCli.txt) |
-| Измерения и итоговые указатели | [verification.json](logs/zookeeper/verification.json), [summary.json без защиты](logs/zookeeper/fencing-0-1794357177778734600/summary.json), [summary.json с защитой](logs/zookeeper/fencing-1-1794357228831722700/summary.json) |
-| Результаты расчётов | [results/zookeeper/](results/zookeeper/) |
-| Эталон ДЗ № 3 | [Результаты](results/rustfs/), [контрольные числа](results/rustfs/mapper_retry_log.txt), [SHA-256](results/rustfs/mapper_failure_check.json) |
+[Отчёт по лабораторной работе № 5 (PDF)](<Управление вычислительными ресурсами в Kubernetes.pdf>)
 
-## Результаты эксперимента
+## Результаты запуска
 
-| Показатель | Без защиты | С защитой |
+| Эксперимент | Что показал запуск | Материалы |
 | --- | --- | --- |
-| Смена лидера | 11,428 с | 10,463 с |
-| Восстановление запасного | С 600-й из 3676 вакансий | С 600-й из 3676 вакансий |
-| Успешных публикаций | 2 | 1 |
-| Версия итогового указателя | 2 | 1 |
-| Попытка старого лидера | Принята | Отклонена с `BadVersionError` |
-| Совпадение CSV с ДЗ № 3 | Да | Да |
+| Лимит памяти | При 24 MiB контейнер получил `OOMKilled`. Измеренный пик в Kubernetes — 44,89 MiB, максимальный RSS в ДЗ‑3 — 127,57 MiB. С запасом 25 % от большего значения получен предел 160 MiB. С ним расчёт завершился. | [Измерения](logs/lab5/a1/memory-20261125-091801/memory.json) · [Журнал](logs/lab5/a1/memory-20261125-091801/commands.txt) |
+| Параллельный MapReduce | Обработано 3 676 вакансий варианта. Частоты всех 17 565 уникальных пар совпали с ДЗ‑3. Самая частая пара — C++ и Linux, 875 вакансий. | [Топ‑10 пар](logs/lab5/a1/storage-20261125-094118/top10.csv) · [Журналы подов](logs/lab5/a1/storage-20261125-094118/) |
+| Планирование и приоритеты | Под `waiting` остался в `Pending` с причиной `Insufficient cpu`. Затем планировщик вытеснил `low` и назначил `high` на освободившийся узел. | [События планировщика](logs/lab5/a1/scheduling-20261125-095222/commands.txt) |
+| Квота пространства имён | Первый под занял единственное место. При создании второго Kubernetes вернул `Forbidden: exceeded quota`. | [Журнал проверки квоты](logs/lab5/a1/quota-20261125-095430/commands.txt) |
+
+- [Dockerfile](lab5/Dockerfile) собирает образ программы и образ с входным CSV для первого этапа и загрузки данных в RustFS.
+- [pairs.py](lab5/pairs.py) разбивает CSV по целым записям, использует [MapReduce из ДЗ‑3](src/skill_counts.py) и проверяет результат. [run.py](lab5/run.py) запускает эксперименты и сохраняет журналы.
+- [rustfs.yaml](lab5/rustfs.yaml) описывает хранилище, сервис и постоянный том. [job.yaml.in](lab5/job.yaml.in) задаёт параметры вычислительных заданий.
+- [pod.yaml.in](lab5/pod.yaml.in), [priorities.yaml](lab5/priorities.yaml) и [quota.yaml](lab5/quota.yaml) используются для проверки планирования, вытеснения и квоты.
